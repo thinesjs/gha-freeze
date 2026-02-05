@@ -1,0 +1,37 @@
+#!/bin/sh
+
+set -e
+
+echo "🔍 Running pre-commit checks..."
+
+echo "📝 Checking formatting..."
+unformatted=$(gofmt -l . 2>&1 | grep -v "vendor/" || true)
+if [ -n "$unformatted" ]; then
+    echo "❌ The following files are not formatted:"
+    echo "$unformatted"
+    echo ""
+    echo "Run: gofmt -w ."
+    exit 1
+fi
+echo "✅ All files are formatted"
+
+echo "🔧 Running go vet..."
+if ! go vet ./...; then
+    echo "❌ go vet failed"
+    exit 1
+fi
+echo "✅ go vet passed"
+
+if command -v golangci-lint > /dev/null 2>&1; then
+    echo "🔍 Running golangci-lint..."
+    if ! golangci-lint run --timeout=5m; then
+        echo "❌ golangci-lint failed"
+        exit 1
+    fi
+    echo "✅ golangci-lint passed"
+else
+    echo "⚠️  golangci-lint not installed, skipping"
+    echo "Install with: brew install golangci-lint (macOS) or go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest"
+fi
+
+echo "✅ All pre-commit checks passed!"
