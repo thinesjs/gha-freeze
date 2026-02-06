@@ -10,7 +10,7 @@ Pinning actions to commit SHAs prevents tag manipulation attacks while keeping v
 
 ```bash
 # Quick install (macOS/Linux)
-curl -fsSL https://raw.githubusercontent.com/thinesjs/gha-freeze/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/thinesjs/gha-freeze/master/install.sh | bash
 
 # Manual install (example for macOS ARM)
 curl -L https://github.com/thinesjs/gha-freeze/releases/download/v0.0.3/gha-freeze_x.x.x_macOS_arm64.tar.gz | tar xz
